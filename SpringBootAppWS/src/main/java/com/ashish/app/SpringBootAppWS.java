@@ -30,7 +30,7 @@ public class SpringBootAppWS {
       })
 	@RequestMapping(path="/getPNR", method = RequestMethod.GET, headers="Accept=application/json",produces="application/json")
 	public SearchBean getPNR(@RequestParam(name="pnr", defaultValue="ABCD1234")String pnr) {
-		logger.info("Test");
+		logger.info("getPNR");
 		SearchBean sb = new SearchBean();
 		sb.setPnr(pnr);
         return sb;
