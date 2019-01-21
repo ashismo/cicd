@@ -56,9 +56,47 @@ E. SCM Poll build
 ===================
 As github is the public account so no need to add password against the github URL. Keep Credential to none.
 
-F. Deploy application in Staging Environment
+F. Tomcat configuration
+==================
+1. Add executon permission to the scripts inside the bin folder
+2. Modify tomcat-users.xml file and set password as "tomcat". Modified section looks like this
+
+<role rolename="manager-script"/>
+  <role rolename="admin-gui"/>
+  <user username="tomcat" password="tomcat" roles="manager-script,admin-gui"/>
+
+G. Deploy application in Staging Environment
 ===================================
-1. Install copy artifact and deploy to container plugin
+1. Install "copy artifact" and "deploy to container" plugin
+2. Create another free style project called -> "Deploy to staging". Then Go to build tab and select dropdown "Copy artifacts from another project". 
+		Artifact to copy: **/*.war
+3. Post build Actions: Deploy WAR/EAR to a container -> WAR/EAR files: **/*.war
+	Select tomcat as container and enter username and password as menioned in tomcat-users.xml
+4. Open first-cicd project and add post build action -> Build other project -> deploy-in-staging
+
+
+AS OF NOW ---- THE UPSTREAM JOB : first-cicd and DOWNSTREAM JOB: deploy to staging
+
+H. Jenkin pipeline for multiple projects dependencies
+=======================================
+Plugin needed:  Build Pipeline Plugin
+
++ button will be available next to main tab i.e. "All" tab where all projects get displayed.
+
+I. Jenkins pipeline for staging and production 
+==================================
+We already created Jenkins pipeline for staging. Now, we shall repeat the same thing in production. The only difference is, the production job will not be triggered automatically. 
+So the "Post-build Actions" of the Jenkins-pipeline-Staging should include "deploy-to-production" project. The dropdown value should be "Build other project (Manual step)"
+
+
+J. Code-based pipeline
+===================
+Jenkin code-based pipeline is written in Groovy
+
+1. Plugin needed: Pipeline. Check under manage plugin->installed tab:if this is present.
+2. Create a project of tye "pipeline project". Say the name of the project is "Code-based Pipeline"
+3. Enter the description of the project and go to the pipeline tab. Definition of the pipeline would be "Pipeline scripts from SCM". Enter the respository URL.
+4. Add Jenkinsfile in the root path of the project.
 
 
 
